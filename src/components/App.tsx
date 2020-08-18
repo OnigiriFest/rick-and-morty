@@ -1,26 +1,30 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import Navbar from './Navbar';
 import Card from './Card';
 
-const App = () => {
+const App = (props: any) => {
+  const renderCharacters = () => {
+    return props.chars.results.map((char: any) => {
+      return <Card key={char.id} name={char.name} image={char.image} />;
+    });
+  };
+
   return (
     <>
-      <div className="bg-gray-900">
+      <div className="bg-gray-900 min-h-screen">
         <Navbar />
-        <div className="container m-auto pb-8 px-5">
-          <Card
-            name="Krombopulos Michael"
-            image="https://rickandmortyapi.com/api/character/avatar/196.jpeg"
-          />
-          <Card
-            name="Cop Rick"
-            image="https://rickandmortyapi.com/api/character/avatar/74.jpeg"
-          />
-        </div>
+        <div className="container m-auto pb-8 px-5">{renderCharacters()}</div>
       </div>
     </>
   );
 };
 
-export default App;
+const mapStateToProps = (state: any) => {
+  return {
+    chars: state.characters,
+  };
+};
+
+export default connect(mapStateToProps)(App);

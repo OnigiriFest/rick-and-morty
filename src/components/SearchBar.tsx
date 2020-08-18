@@ -1,19 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, FormEvent, ChangeEvent } from 'react';
+import { connect } from 'react-redux';
 
-const SearchBar = () => {
+import { getCharacters, clearCharacters } from '../redux/charsDuck';
+
+const SearchBar = (props: any) => {
   const [input, setInput] = useState('');
 
-  const onSubmit = (e?: any) => {
-    e.preventDefault();
+  const onSubmit = (e?: FormEvent<HTMLFormElement>) => {
+    if (e) {
+      e.preventDefault();
+    }
+
+    if (input.length < 2) {
+      return;
+    }
+
+    props.getCharacters(input);
   };
+
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setInput(e.target.value);
+
+    onSubmit();
+  };
+
   const resetInput = () => {
     setInput('');
+
+    props.clearCharacters();
   };
 
   return (
     <>
       <button
-        onClick={onSubmit}
+        onClick={(e) => onSubmit()}
         className="self-center h-10 rounded-l-full bg-white flex">
         <svg
           className="ml-2 self-center"
@@ -31,12 +51,12 @@ const SearchBar = () => {
           />
         </svg>
       </button>
-      <form onSubmit={(e) => onSubmit(e)} className="w-full">
+      <form onSubmit={(e) => onSubmit(e)} className="w-full self-center">
         <input
           value={input}
-          onChange={(e) => setInput(e.target.value)}
+          onChange={(e) => onChange(e)}
           type="text"
-          className="h-10 self-center w-full px-2 min-w-0"
+          className="h-10 w-full px-2 min-w-0"
         />
       </form>
       <button
@@ -62,4 +82,4 @@ const SearchBar = () => {
   );
 };
 
-export default SearchBar;
+export default connect(null, { getCharacters, clearCharacters })(SearchBar);
