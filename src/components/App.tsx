@@ -6,6 +6,13 @@ import Card from './Card';
 
 const App = (props: any) => {
   const renderCharacters = () => {
+    if (!props.chars.results) {
+      return (
+        <div className="text-white mt-4 text-2xl text-center">
+          No se encontraron resultados para este termino de búsqueda.
+        </div>
+      );
+    }
     return props.chars.results.map((char: any) => {
       return <Card key={char.id} name={char.name} image={char.image} />;
     });

@@ -47,7 +47,12 @@ const charsReducer = (state: CharsState = initialState, action: Action) => {
   switch (action.type) {
     case SEARCH_ERROR:
       if (action.payload && action.payload.error) {
-        return { ...state, fetching: false, error: action.payload.error };
+        return {
+          ...state,
+          fetching: false,
+          error: action.payload.error,
+          results: [],
+        };
       }
       return state;
     case SEARCH_SUCCESS:
