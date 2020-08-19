@@ -33,11 +33,28 @@ const SearchBar = ({ getCharacters, clearCharacters, chars }: any) => {
 
   return (
     <>
+      <div className="self-center h-10 rounded-l-full bg-gray-900 flex">
+        <svg
+          className="self-center text-gray-400 ml-2"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </div>
       <input
         value={input}
         onChange={(e) => setInput(e.target.value)}
         type="text"
-        className={`h-10 self-center w-full px-2 min-w-0 rounded-l-full bg-gray-900 text-white ${
+        className={`h-10 self-center w-full px-2 min-w-0 bg-gray-900 text-white ${
           input === '' && chars.results && chars.results.length === 0
             ? 'rounded-r-full'
             : ''

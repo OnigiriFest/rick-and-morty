@@ -1,4 +1,8 @@
 import axios from 'axios';
+import { Dispatch } from 'redux';
+
+import CharacterResults from '../types/CharacterResults';
+import { AppActions, CharacterActionTypes } from '../types/actions';
 
 // constant types
 
@@ -14,27 +18,7 @@ export const CLEAR = 'CLEAR';
 
 // reducer
 
-interface character {
-  id: number;
-  name: string;
-  type?: string;
-  gender?: string;
-  image: string;
-}
-
-interface CharsState {
-  info?: {
-    pages: number;
-    next: number;
-    prev: number;
-  };
-  results?: character[];
-  fetching?: Boolean;
-  error?: string;
-  term: string;
-}
-
-const initialState = {
+const initialState: CharacterResults = {
   info: {
     pages: 0,
     next: 0,
@@ -46,9 +30,10 @@ const initialState = {
   term: '',
 };
 
-type Action = { type: string; payload?: CharsState };
-
-const charsReducer = (state: CharsState = initialState, action: Action) => {
+const charsReducer = (
+  state = initialState,
+  action: CharacterActionTypes
+): CharacterResults => {
   switch (action.type) {
     case SEARCH_ERROR:
       if (action.payload && action.payload.error) {
@@ -93,7 +78,9 @@ export default charsReducer;
 
 // Actions
 
-export const getCharacters = (name: string) => async (dispatch: any) => {
+export const getCharacters = (name: string) => async (
+  dispatch: Dispatch<AppActions>
+) => {
   const query = `
   query {
     characters(page: 1, filter: { name: "${name}" }) {
@@ -113,21 +100,25 @@ export const getCharacters = (name: string) => async (dispatch: any) => {
       payload: { ...response.data.data.characters, term: name },
     });
   } catch (error) {
-    dispatch({ type: SEARCH_ERROR, payload: { error: error.message } });
+    dispatch({
+      type: SEARCH_ERROR,
+      payload: { error: error.message, term: name },
+    });
   }
 };
 
-export const clearCharacters = () => {
+export const clearCharacters = (): AppActions => {
   return { type: CLEAR };
 };
 
-export const addCharacters = (characters: CharsState) => {
+export const addCharacters = (characters: CharacterResults): AppActions => {
   if (characters.error) {
     return { type: ADD_SEARCH_ERROR, payload: { ...characters } };
   } else {
+    console.log('hola');
     return {
       type: ADD_SEARCH_SUCCESS,
-      payload: { ...characters },
+      payload: characters,
     };
   }
 };
