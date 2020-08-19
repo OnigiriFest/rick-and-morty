@@ -1,6 +1,7 @@
 import React from 'react';
 
 import SearchBar from './SearchBar';
+import Filter from './Filter';
 
 const Navbar = () => {
   return (
@@ -10,6 +11,7 @@ const Navbar = () => {
       </div>
       <div className="flex w-full sm:ml-3">
         <SearchBar />
+        <Filter />
       </div>
     </div>
   );

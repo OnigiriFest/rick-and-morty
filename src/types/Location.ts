@@ -1,6 +1,6 @@
 import Character from './Character';
 
-export interface Location {
+export default interface Location {
   id: number;
   name: string;
   dimesion: string;
