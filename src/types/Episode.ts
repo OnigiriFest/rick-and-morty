@@ -1,6 +1,6 @@
 import Character from './Character';
 
-export interface Episodes {
+export default interface Episode {
   id: number;
   name: string;
   episode: string;

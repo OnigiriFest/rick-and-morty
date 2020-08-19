@@ -115,7 +115,6 @@ export const addCharacters = (characters: CharacterResults): AppActions => {
   if (characters.error) {
     return { type: ADD_SEARCH_ERROR, payload: { ...characters } };
   } else {
-    console.log('hola');
     return {
       type: ADD_SEARCH_SUCCESS,
       payload: characters,

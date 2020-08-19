@@ -1,12 +1,12 @@
-import Location from './Location';
+import Episode from './Episode';
 
-export default interface LocationResults {
+export default interface EpisodeResults {
   info?: {
     pages: number;
     next: number;
     prev: number;
   };
-  results?: Location[];
+  results?: Episode[];
   fetching?: Boolean;
   error?: string;
   term: string;

@@ -2,8 +2,27 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import { getCharacters, clearCharacters } from '../redux/charsDuck';
+import { getLocations } from '../redux/locationDuck';
+import CharacterResults from '../types/CharacterResults';
+import LocationResults from '../types/LocationResults';
+import { AppState } from '../redux/store';
+import { AppActions } from '../types/actions';
+import { ThunkDispatch } from 'redux-thunk';
+import { bindActionCreators } from 'redux';
+import Filter from '../types/Filter';
 
-const SearchBar = ({ getCharacters, clearCharacters, chars }: any) => {
+interface SearchBarProps {}
+
+type Props = SearchBarProps & LinkStateToProps & LinkDispatchToProps;
+
+const SearchBar = ({
+  getCharacters,
+  getLocations,
+  clearCharacters,
+  chars,
+  locations,
+  filter,
+}: Props) => {
   const [input, setInput] = useState('');
   const [debouncedInput, setDebouncedInput] = useState(input);
 
@@ -22,8 +41,17 @@ const SearchBar = ({ getCharacters, clearCharacters, chars }: any) => {
       return;
     }
 
-    getCharacters(debouncedInput);
-  }, [debouncedInput, getCharacters]);
+    switch (filter.name) {
+      case 'characters':
+        getCharacters(debouncedInput);
+        break;
+      case 'locations':
+        getLocations(debouncedInput);
+        break;
+      default:
+        break;
+    }
+  }, [debouncedInput, getCharacters, filter, getLocations]);
 
   const resetInput = () => {
     setInput('');
@@ -85,12 +113,30 @@ const SearchBar = ({ getCharacters, clearCharacters, chars }: any) => {
   );
 };
 
-const mapStateToProps = (state: any) => {
-  return {
-    chars: state.characters,
-  };
-};
+interface LinkStateToProps {
+  chars: CharacterResults;
+  locations: LocationResults;
+  filter: Filter;
+}
 
-export default connect(mapStateToProps, { getCharacters, clearCharacters })(
-  SearchBar
-);
+interface LinkDispatchToProps {
+  getCharacters: (name: string) => void;
+  getLocations: (name: string) => void;
+  clearCharacters: () => AppActions;
+}
+
+const mapStateToProps = (state: AppState): LinkStateToProps => ({
+  chars: state.characters,
+  locations: state.location,
+  filter: state.filter,
+});
+
+const mapDispatchToProps = (
+  dispatch: ThunkDispatch<any, any, AppActions>
+): LinkDispatchToProps => ({
+  getCharacters: bindActionCreators(getCharacters, dispatch),
+  getLocations: bindActionCreators(getLocations, dispatch),
+  clearCharacters: bindActionCreators(clearCharacters, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchBar);

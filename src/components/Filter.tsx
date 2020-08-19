@@ -1,4 +1,10 @@
-import React, { useState, ChangeEvent, useEffect } from 'react';
+import React, {
+  useState,
+  ChangeEvent,
+  useEffect,
+  RefObject,
+  useRef,
+} from 'react';
 import { connect } from 'react-redux';
 
 import { setFilter } from '../redux/filterDuck';
@@ -15,6 +21,24 @@ type Props = FiltersProps & LinkStateToProps & LinkDispatchToProps;
 const Filter = ({ setFilter }: Props) => {
   const [hideMenu, setHideMenu] = useState(true);
   const [selected, setSelected] = useState('characters');
+  const menu: RefObject<HTMLDivElement> = useRef(null);
+
+  useEffect(() => {
+    const onBodyClick = (e: any) => {
+      if (menu && menu.current) {
+        if (menu.current.contains(e.target)) {
+          return;
+        }
+      }
+      setHideMenu(true);
+    };
+
+    document.body.addEventListener('click', onBodyClick);
+
+    return () => {
+      document.body.removeEventListener('click', onBodyClick);
+    };
+  }, [menu]);
 
   useEffect(() => {
     setFilter({ name: selected });
@@ -29,9 +53,9 @@ const Filter = ({ setFilter }: Props) => {
       <button
         onClick={() => setHideMenu(false)}
         className="text-white flex ml-2 self-center">
-        <div className="self-center text-blue-300">Filtrar</div>
+        <div className="self-center text-teal-300">Filtrar</div>
         <svg
-          className="self-center text-gray-400"
+          className="self-center text-gray-500"
           xmlns="http://www.w3.org/2000/svg"
           width="24"
           height="24"
@@ -46,6 +70,7 @@ const Filter = ({ setFilter }: Props) => {
       </button>
       {/* Menu */}
       <div
+        ref={menu}
         className={`${
           hideMenu ? 'hidden' : ''
         } absolute top-0 right-0 bg-gray-700 text-white py-4 px-4 rounded-md`}>

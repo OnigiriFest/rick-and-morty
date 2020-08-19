@@ -28,7 +28,10 @@ const initialState: LocationResults = {
 
 // Reducer
 
-const locationReducer = (state = initialState, action: LocationActionTypes) => {
+const locationReducer = (
+  state = initialState,
+  action: LocationActionTypes
+): LocationResults => {
   switch (action.type) {
     case SEARCH_LOCATION_ERROR:
       if (action.payload && action.payload.error) {
@@ -47,6 +50,21 @@ const locationReducer = (state = initialState, action: LocationActionTypes) => {
       return state;
     case SEARCH_LOCATION:
       return { ...state, fetching: true };
+    case ADD_LOCATION_ERROR:
+      if (action.payload && action.payload.error) {
+        return { ...state, fetching: false, error: action.payload.error };
+      }
+      return { ...state };
+    case ADD_LOCATION_SUCCESS:
+      if (state.results && action.payload && action.payload.results) {
+        return {
+          ...state,
+          ...action.payload,
+          fetching: false,
+          results: [...state.results, ...action.payload.results],
+        };
+      }
+      return { ...state };
     default:
       return state;
   }
@@ -59,7 +77,7 @@ export const getLocations = (name: string) => async (
 ) => {
   const query = `
   query {
-    location(page: 1, filter: { name: "${name}" }) {
+    locations(page: 1, filter: { name: "${name}" }) {
       info {count pages next prev}
       results { id name dimension }
     }
@@ -73,13 +91,24 @@ export const getLocations = (name: string) => async (
 
     dispatch({
       type: SEARCH_LOCATION_SUCCESS,
-      payload: { ...response.data.data.location, term: name },
+      payload: { ...response.data.data.locations, term: name },
     });
   } catch (error) {
     dispatch({
       type: SEARCH_LOCATION_ERROR,
       payload: { error: error.message, term: name },
     });
+  }
+};
+
+export const addLocations = (locations: LocationResults): AppActions => {
+  if (locations.error) {
+    return { type: ADD_LOCATION_ERROR, payload: { ...locations } };
+  } else {
+    return {
+      type: ADD_LOCATION_SUCCESS,
+      payload: locations,
+    };
   }
 };
 

@@ -19,6 +19,14 @@ import { SET_FILTER } from '../redux/filterDuck';
 import CharacterResults from './CharacterResults';
 import LocationResults from './LocationResults';
 import Filter from './Filter';
+import {
+  SEARCH_EPISODE,
+  SEARCH_EPISODE_ERROR,
+  SEARCH_EPISODE_SUCCESS,
+  ADD_EPISODE_SUCCESS,
+  ADD_EPISODE_ERROR,
+} from '../redux/episodeDuck';
+import EpisodeResults from './EpisodeResults';
 
 // Filter
 
@@ -60,9 +68,32 @@ export interface getLocations {
   payload?: LocationResults;
 }
 
-export type LocationActionTypes = getLocations;
+export interface addLocations {
+  type: typeof ADD_LOCATION_SUCCESS | typeof ADD_LOCATION_ERROR;
+  payload: LocationResults;
+}
+
+export type LocationActionTypes = getLocations | addLocations;
+
+// Episode
+
+export interface getEpisodes {
+  type:
+    | typeof SEARCH_EPISODE
+    | typeof SEARCH_EPISODE_ERROR
+    | typeof SEARCH_EPISODE_SUCCESS;
+  payload?: EpisodeResults;
+}
+
+export interface addEpisodes {
+  type: typeof ADD_EPISODE_SUCCESS | typeof ADD_EPISODE_ERROR;
+  payload: EpisodeResults;
+}
+
+export type EpisodeActionType = getEpisodes | addEpisodes;
 
 export type AppActions =
   | FilterActionTypes
   | CharacterActionTypes
-  | LocationActionTypes;
+  | LocationActionTypes
+  | EpisodeActionType;
