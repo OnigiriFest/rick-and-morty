@@ -9,5 +9,5 @@ export default interface LocationResults {
   results?: Location[];
   fetching?: Boolean;
   error?: string;
-  term: string;
+  term?: string;
 }

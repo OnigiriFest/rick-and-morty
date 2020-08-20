@@ -6,6 +6,9 @@ import {
   ADD_SEARCH_SUCCESS,
   CLEAR,
   clearCharacters,
+  FETCH_CHARACTER,
+  FETCH_CHARACTER_ERROR,
+  FETCH_CHARACTER_SUCCESS,
 } from '../redux/charsDuck';
 import {
   SEARCH_LOCATION,
@@ -14,6 +17,9 @@ import {
   ADD_LOCATION_ERROR,
   ADD_LOCATION_SUCCESS,
   CLEAR_LOCATION,
+  FETCH_LOCATION,
+  FETCH_LOCATION_ERROR,
+  FETCH_LOCATION_SUCCESS,
 } from '../redux/locationDuck';
 import { SET_FILTER } from '../redux/filterDuck';
 import CharacterResults from './CharacterResults';
@@ -26,6 +32,9 @@ import {
   ADD_EPISODE_SUCCESS,
   ADD_EPISODE_ERROR,
   CLEAR_EPISODE,
+  FETCH_EPISODE,
+  FETCH_EPISODE_ERROR,
+  FETCH_EPISODE_SUCCESS,
 } from '../redux/episodeDuck';
 import EpisodeResults from './EpisodeResults';
 
@@ -54,10 +63,19 @@ export interface addCharacters {
   payload: CharacterResults;
 }
 
+export interface fetchCharacter {
+  type:
+    | typeof FETCH_CHARACTER
+    | typeof FETCH_CHARACTER_ERROR
+    | typeof FETCH_CHARACTER_SUCCESS;
+  payload?: CharacterResults;
+}
+
 export type CharacterActionTypes =
   | getCharacters
   | clearCharacters
-  | addCharacters;
+  | addCharacters
+  | fetchCharacter;
 
 // Location
 
@@ -78,7 +96,19 @@ export interface clearLocations {
   type: typeof CLEAR_LOCATION;
 }
 
-export type LocationActionTypes = getLocations | addLocations | clearLocations;
+export interface fetchLocation {
+  type:
+    | typeof FETCH_LOCATION
+    | typeof FETCH_LOCATION_ERROR
+    | typeof FETCH_LOCATION_SUCCESS;
+  payload?: LocationResults;
+}
+
+export type LocationActionTypes =
+  | getLocations
+  | addLocations
+  | clearLocations
+  | fetchLocation;
 
 // Episode
 
@@ -99,7 +129,19 @@ export interface clearEpisodes {
   type: typeof CLEAR_EPISODE;
 }
 
-export type EpisodeActionType = getEpisodes | addEpisodes | clearEpisodes;
+export interface fetchEpisode {
+  type:
+    | typeof FETCH_EPISODE
+    | typeof FETCH_EPISODE_ERROR
+    | typeof FETCH_EPISODE_SUCCESS;
+  payload?: EpisodeResults;
+}
+
+export type EpisodeActionType =
+  | getEpisodes
+  | addEpisodes
+  | clearEpisodes
+  | fetchEpisode;
 
 export type AppActions =
   | FilterActionTypes

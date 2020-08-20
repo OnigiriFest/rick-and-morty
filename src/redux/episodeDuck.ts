@@ -4,6 +4,7 @@ import { URL } from './charsDuck';
 import EpisodeResults from '../types/EpisodeResults';
 import { EpisodeActionType, AppActions } from '../types/actions';
 import { Dispatch } from 'redux';
+import { AppState } from './store';
 
 // Constants
 
@@ -14,6 +15,10 @@ export const SEARCH_EPISODE_SUCCESS = 'SEARCH_EPISODE_SUCCESS';
 export const ADD_EPISODE_ERROR = 'ADD_EPISODE_ERROR';
 export const ADD_EPISODE_SUCCESS = 'ADD_EPISODE_SUCCESS';
 export const CLEAR_EPISODE = 'CLEAR_EPISODE';
+
+export const FETCH_EPISODE = 'FETCH_EPISODE';
+export const FETCH_EPISODE_SUCCESS = 'FETCH_EPISODE_SUCCESS';
+export const FETCH_EPISODE_ERROR = 'FETCH_EPISODE_ERROR';
 
 // Reducer
 
@@ -68,10 +73,24 @@ const episodeReducer = (
       return { ...state };
     case CLEAR_EPISODE:
       return { ...initialState };
+    case FETCH_EPISODE:
+      return { ...state, fetching: true };
+    case FETCH_EPISODE_ERROR:
+      if (action.payload) {
+        return { ...state, fetching: false, error: action.payload.error };
+      }
+      return { ...state };
+    case FETCH_EPISODE_SUCCESS:
+      if (action.payload) {
+        return { ...state, fetching: false, ...action.payload };
+      }
+      return { ...state };
     default:
       return state;
   }
 };
+
+export default episodeReducer;
 
 // Actions
 
@@ -119,4 +138,40 @@ export const addEpisodes = (episodes: EpisodeResults): AppActions => {
   }
 };
 
-export default episodeReducer;
+export const fetchEpisode = (index: number) => async (
+  dispatch: Dispatch<AppActions>,
+  getState: () => AppState
+) => {
+  dispatch({ type: FETCH_EPISODE });
+
+  let episodes = { ...getState().episodes };
+
+  const query = `
+    query {
+      episode(id: ${
+        episodes.results![index].id
+      }) { id name air_date episode characters {name} }
+    }
+  `;
+
+  try {
+    const response = await axios.post(URL, { query });
+
+    if (episodes.results) {
+      episodes.results[index] = response.data.data.episode;
+      if (episodes.results[index].characters) {
+        episodes.results[index].characters?.splice(
+          5,
+          episodes.results[index].characters!.length - 1
+        );
+      }
+    }
+
+    dispatch({ type: FETCH_EPISODE_SUCCESS, payload: { ...episodes } });
+  } catch (error) {
+    dispatch({
+      type: FETCH_EPISODE_ERROR,
+      payload: { error: error.message },
+    });
+  }
+};

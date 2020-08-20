@@ -1,16 +1,20 @@
 import React, { useState } from 'react';
+
 import ViewItem from './ViewItem';
 
-interface CardData {
+interface CardProps {
   image?: string;
   name: string;
   data?: string;
   type: string;
   dimension?: string;
   episode?: string;
+  index: number;
 }
 
-const Card = ({ image = '', name, type, dimension, episode }: CardData) => {
+type Props = CardProps;
+
+const Card = ({ image = '', name, type, dimension, episode, index }: Props) => {
   let imageStyles = {
     backgroundImage: `url(${image})`,
     backgroundRepeat: 'no-reapeat',
@@ -44,7 +48,12 @@ const Card = ({ image = '', name, type, dimension, episode }: CardData) => {
         </>
       ) : null}
       {showModal ? (
-        <ViewItem toggleModal={setShowModal} showModal={showModal} />
+        <ViewItem
+          index={index}
+          type={type}
+          toggleModal={setShowModal}
+          showModal={showModal}
+        />
       ) : null}
     </div>
   );

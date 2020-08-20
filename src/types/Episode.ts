@@ -5,5 +5,5 @@ export default interface Episode {
   name: string;
   episode: string;
   characters?: Character[];
-  air_data?: string;
+  air_date?: string;
 }

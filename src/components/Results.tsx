@@ -27,11 +27,12 @@ const Results = (props: Props) => {
         if (!props.chars.results || props.chars.results.length === 0) {
           return false;
         }
-        return props.chars.results.map((char) => {
+        return props.chars.results.map((char, index) => {
           return (
             <Card
               type={props.filter.name}
               key={char.id}
+              index={index}
               name={char.name}
               image={char.image}
             />
@@ -41,11 +42,12 @@ const Results = (props: Props) => {
         if (!props.locations.results || props.locations.results.length === 0) {
           return false;
         }
-        return props.locations.results.map((location) => {
+        return props.locations.results.map((location, index) => {
           return (
             <Card
               key={location.id}
               type={props.filter.name}
+              index={index}
               name={location.name}
               dimension={location.dimension}
             />
@@ -55,10 +57,11 @@ const Results = (props: Props) => {
         if (!props.episodes.results || props.episodes.results.length === 0) {
           return false;
         }
-        return props.episodes.results.map((episode) => {
+        return props.episodes.results.map((episode, index) => {
           return (
             <Card
               key={episode.id}
+              index={index}
               type={props.filter.name}
               name={episode.name}
               episode={episode.episode}
@@ -110,7 +113,7 @@ const Results = (props: Props) => {
       } catch (error) {
         props.addLocations({
           error: error.message,
-          term: props.chars.term,
+          term: props.locations.term,
         });
       }
 

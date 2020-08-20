@@ -9,5 +9,5 @@ export default interface EpisodeResults {
   results?: Episode[];
   fetching?: Boolean;
   error?: string;
-  term: string;
+  term?: string;
 }

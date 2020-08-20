@@ -3,6 +3,7 @@ import { Dispatch } from 'redux';
 
 import CharacterResults from '../types/CharacterResults';
 import { AppActions, CharacterActionTypes } from '../types/actions';
+import { AppState } from './store';
 
 // constant types
 
@@ -13,6 +14,10 @@ export const SEARCH_SUCCESS = 'SEARCH_SUCCESS';
 
 export const ADD_SEARCH_ERROR = 'ADD_SEARCH_ERROR';
 export const ADD_SEARCH_SUCCESS = 'ADD_SEARCH_SUCCESS';
+
+export const FETCH_CHARACTER = 'FETCH_CHARACTER';
+export const FETCH_CHARACTER_SUCCESS = 'FETCH_CHARACTER_SUCCESS';
+export const FETCH_CHARACTER_ERROR = 'FETCH_CHARACTER_ERROR';
 
 export const CLEAR = 'CLEAR';
 
@@ -69,6 +74,18 @@ const charsReducer = (
         };
       }
       return { ...state };
+    case FETCH_CHARACTER:
+      return { ...state, fetching: true };
+    case FETCH_CHARACTER_ERROR:
+      if (action.payload) {
+        return { ...state, fetching: false, error: action.payload.error };
+      }
+      return { ...state };
+    case FETCH_CHARACTER_SUCCESS:
+      if (action.payload) {
+        return { ...state, fetching: false, ...action.payload };
+      }
+      return { ...state };
     default:
       return state;
   }
@@ -119,5 +136,37 @@ export const addCharacters = (characters: CharacterResults): AppActions => {
       type: ADD_SEARCH_SUCCESS,
       payload: characters,
     };
+  }
+};
+
+export const fetchCharacter = (index: number) => async (
+  dispatch: Dispatch<AppActions>,
+  getState: () => AppState
+) => {
+  dispatch({ type: FETCH_CHARACTER });
+
+  let characters = { ...getState().characters };
+
+  const query = `
+    query {
+      character(id: ${
+        characters.results![index].id
+      }) { id name type gender species image }
+    }
+  `;
+
+  try {
+    const response = await axios.post(URL, { query });
+
+    if (characters.results) {
+      characters.results[index] = response.data.data.character;
+    }
+
+    dispatch({ type: FETCH_CHARACTER_SUCCESS, payload: { ...characters } });
+  } catch (error) {
+    dispatch({
+      type: FETCH_CHARACTER_ERROR,
+      payload: { error: error.message },
+    });
   }
 };

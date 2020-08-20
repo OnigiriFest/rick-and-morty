@@ -9,5 +9,5 @@ export default interface CharacterResults {
   results?: Character[];
   fetching?: Boolean;
   error?: string;
-  term: string;
+  term?: string;
 }
