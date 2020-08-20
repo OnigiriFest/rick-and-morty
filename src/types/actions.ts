@@ -25,6 +25,7 @@ import {
   SEARCH_EPISODE_SUCCESS,
   ADD_EPISODE_SUCCESS,
   ADD_EPISODE_ERROR,
+  CLEAR_EPISODE,
 } from '../redux/episodeDuck';
 import EpisodeResults from './EpisodeResults';
 
@@ -73,7 +74,11 @@ export interface addLocations {
   payload: LocationResults;
 }
 
-export type LocationActionTypes = getLocations | addLocations;
+export interface clearLocations {
+  type: typeof CLEAR_LOCATION;
+}
+
+export type LocationActionTypes = getLocations | addLocations | clearLocations;
 
 // Episode
 
@@ -90,7 +95,11 @@ export interface addEpisodes {
   payload: EpisodeResults;
 }
 
-export type EpisodeActionType = getEpisodes | addEpisodes;
+export interface clearEpisodes {
+  type: typeof CLEAR_EPISODE;
+}
+
+export type EpisodeActionType = getEpisodes | addEpisodes | clearEpisodes;
 
 export type AppActions =
   | FilterActionTypes

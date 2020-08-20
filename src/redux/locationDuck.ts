@@ -65,10 +65,14 @@ const locationReducer = (
         };
       }
       return { ...state };
+    case CLEAR_LOCATION:
+      return { ...initialState };
     default:
       return state;
   }
 };
+
+export default locationReducer;
 
 // Actions
 
@@ -101,6 +105,10 @@ export const getLocations = (name: string) => async (
   }
 };
 
+export const clearLocations = (): AppActions => {
+  return { type: CLEAR_LOCATION };
+};
+
 export const addLocations = (locations: LocationResults): AppActions => {
   if (locations.error) {
     return { type: ADD_LOCATION_ERROR, payload: { ...locations } };
@@ -111,5 +119,3 @@ export const addLocations = (locations: LocationResults): AppActions => {
     };
   }
 };
-
-export default locationReducer;

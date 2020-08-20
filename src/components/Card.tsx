@@ -6,9 +6,10 @@ interface CardData {
   data?: string;
   type: string;
   dimension?: string;
+  episode?: string;
 }
 
-const Card = ({ image = '', name, type, dimension }: CardData) => {
+const Card = ({ image = '', name, type, dimension, episode }: CardData) => {
   let imageStyles = {
     backgroundImage: `url(${image})`,
     backgroundRepeat: 'no-reapeat',
@@ -29,6 +30,12 @@ const Card = ({ image = '', name, type, dimension }: CardData) => {
         <>
           <div className="p-3 text-white font-bold">{name}</div>
           <div className="p-3 pt-0 text-gray-300">{dimension}</div>
+        </>
+      ) : null}
+      {type === 'episodes' ? (
+        <>
+          <div className="p-3 text-white font-bold">{name}</div>
+          <div className="p-3 pt-0 text-gray-300">{episode}</div>
         </>
       ) : null}
     </div>

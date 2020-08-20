@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-
-import { getCharacters, clearCharacters } from '../redux/charsDuck';
-import { getLocations } from '../redux/locationDuck';
-import CharacterResults from '../types/CharacterResults';
-import LocationResults from '../types/LocationResults';
-import { AppState } from '../redux/store';
-import { AppActions } from '../types/actions';
 import { ThunkDispatch } from 'redux-thunk';
 import { bindActionCreators } from 'redux';
+
+import CharacterResults from '../types/CharacterResults';
+import LocationResults from '../types/LocationResults';
+import EpisodeResults from '../types/EpisodeResults';
 import Filter from '../types/Filter';
+import { getCharacters, clearCharacters } from '../redux/charsDuck';
+import { getLocations, clearLocations } from '../redux/locationDuck';
+import { getEpisodes, clearEpisodes } from '../redux/episodeDuck';
+import { AppState } from '../redux/store';
+import { AppActions } from '../types/actions';
 
 interface SearchBarProps {}
 
@@ -18,9 +20,13 @@ type Props = SearchBarProps & LinkStateToProps & LinkDispatchToProps;
 const SearchBar = ({
   getCharacters,
   getLocations,
+  getEpisodes,
   clearCharacters,
+  clearLocations,
+  clearEpisodes,
   chars,
   locations,
+  episodes,
   filter,
 }: Props) => {
   const [input, setInput] = useState('');
@@ -48,15 +54,32 @@ const SearchBar = ({
       case 'locations':
         getLocations(debouncedInput);
         break;
+      case 'episodes':
+        getEpisodes(debouncedInput);
+        break;
       default:
         break;
     }
-  }, [debouncedInput, getCharacters, filter, getLocations]);
+  }, [debouncedInput, getCharacters, filter, getLocations, getEpisodes]);
 
   const resetInput = () => {
     setInput('');
 
     clearCharacters();
+    clearLocations();
+    clearEpisodes();
+  };
+
+  const noRenderButton = () => {
+    return input === '' &&
+      chars.results &&
+      locations.results &&
+      episodes.results &&
+      chars.results.length === 0 &&
+      locations.results.length === 0 &&
+      episodes.results.length === 0
+      ? true
+      : false;
   };
 
   return (
@@ -83,12 +106,10 @@ const SearchBar = ({
         onChange={(e) => setInput(e.target.value)}
         type="text"
         className={`h-10 self-center w-full px-2 min-w-0 bg-gray-900 text-white ${
-          input === '' && chars.results && chars.results.length === 0
-            ? 'rounded-r-full'
-            : ''
+          noRenderButton() ? 'rounded-r-full' : ''
         }`}
       />
-      {input === '' && chars.results && chars.results.length === 0 ? null : (
+      {noRenderButton() ? null : (
         <button
           onClick={resetInput}
           className="self-center h-10 rounded-r-full bg-gray-900 flex">
@@ -116,18 +137,23 @@ const SearchBar = ({
 interface LinkStateToProps {
   chars: CharacterResults;
   locations: LocationResults;
+  episodes: EpisodeResults;
   filter: Filter;
 }
 
 interface LinkDispatchToProps {
   getCharacters: (name: string) => void;
   getLocations: (name: string) => void;
+  getEpisodes: (name: string) => void;
   clearCharacters: () => AppActions;
+  clearLocations: () => AppActions;
+  clearEpisodes: () => AppActions;
 }
 
 const mapStateToProps = (state: AppState): LinkStateToProps => ({
   chars: state.characters,
   locations: state.location,
+  episodes: state.episodes,
   filter: state.filter,
 });
 
@@ -136,7 +162,10 @@ const mapDispatchToProps = (
 ): LinkDispatchToProps => ({
   getCharacters: bindActionCreators(getCharacters, dispatch),
   getLocations: bindActionCreators(getLocations, dispatch),
+  getEpisodes: bindActionCreators(getEpisodes, dispatch),
   clearCharacters: bindActionCreators(clearCharacters, dispatch),
+  clearLocations: bindActionCreators(clearLocations, dispatch),
+  clearEpisodes: bindActionCreators(clearEpisodes, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchBar);
