@@ -184,6 +184,36 @@ const Results = (props: Props) => {
     }
   };
 
+  const getMessage = () => {
+    let message;
+
+    switch (props.filter.name) {
+      case 'episodes':
+        if (props.episodes.term !== '') {
+          message = props.episodes.term;
+        }
+        break;
+      case 'characters':
+        if (props.chars.term !== '') {
+          message = props.chars.term;
+        }
+        break;
+      case 'locations':
+        if (props.locations.term !== '') {
+          message = props.locations.term;
+        }
+        break;
+      default:
+        break;
+    }
+
+    if (message) {
+      return `No se encontraron resultados para el termino de búsqueda ${message}.`;
+    }
+
+    return 'Bienvenido realiza una búsqueda';
+  };
+
   let characters = renderResults();
 
   return (
@@ -203,9 +233,7 @@ const Results = (props: Props) => {
           props.locations.fetching ||
           props.episodes.fetching
             ? loading()
-            : props.chars.term === ''
-            ? `Bienvenido realiza una búsqueda`
-            : `No se encontraron resultados para el termino de búsqueda "${props.chars.term}".`}
+            : getMessage()}
         </div>
       )}
     </div>

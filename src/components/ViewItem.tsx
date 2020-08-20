@@ -137,7 +137,7 @@ const ViewItem = ({
         {/* ------------------ EPISODE ---------------------- */}
 
         {type === 'episodes' && episodes.results && (
-          <div className="flex">
+          <div className="flex mt-8 justify-between">
             <div className="px-8">
               <p className="text-center font-bold text-lg mt-2">
                 {episodes.results[index].name}
@@ -170,7 +170,7 @@ const ViewItem = ({
                   </div>
                 )}
             </div>
-            <div className="p-2">
+            <div className="p-2 pt-0">
               <button className="bg-black p-1 rounded-full">
                 <svg
                   onClick={() => toggleModal(!showModal)}
@@ -196,9 +196,9 @@ const ViewItem = ({
         {/* ------------------ LOCATION ---------------------- */}
 
         {type === 'locations' && locations.results && (
-          <div className="flex">
+          <div className="flex mt-8 justify-between">
             <div className="px-8">
-              <p className="text-center font-bold text-lg mt-2">
+              <p className="text-center font-bold text-lg">
                 {locations.results[index].name}
               </p>
               {locations.results[index].dimension !== '' && (
@@ -227,7 +227,7 @@ const ViewItem = ({
                   </div>
                 )}
             </div>
-            <div className="p-2">
+            <div className="p-2 pt-0">
               <button className="bg-black p-1 rounded-full">
                 <svg
                   onClick={() => toggleModal(!showModal)}

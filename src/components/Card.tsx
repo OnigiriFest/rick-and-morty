@@ -39,14 +39,14 @@ const Card = ({ image = '', name, type, dimension, episode, index }: Props) => {
           ) : null}
           {type === 'locations' ? (
             <>
-              <div className="p-3 text-white font-bold">{name}</div>
-              <div className="p-3 pt-0 text-gray-300">{dimension}</div>
+              <div className="p-3 xl:m-5 text-white font-bold">{name}</div>
+              <div className="p-3 pt-0 xl:m-5 text-gray-300">{dimension}</div>
             </>
           ) : null}
           {type === 'episodes' ? (
             <>
-              <div className="p-3 text-white font-bold">{name}</div>
-              <div className="p-3 pt-0 text-gray-300">{episode}</div>
+              <div className="p-3 xl:m-5 text-white font-bold">{name}</div>
+              <div className="p-3 pt-0 xl:m-5 text-gray-300">{episode}</div>
             </>
           ) : null}
           {showModal ? (
