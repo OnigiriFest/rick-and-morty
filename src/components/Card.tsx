@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import ViewItem from './ViewItem';
 
 interface CardData {
   image?: string;
@@ -18,8 +19,12 @@ const Card = ({ image = '', name, type, dimension, episode }: CardData) => {
     height: '300px',
   };
 
+  const [showModal, setShowModal] = useState(false);
+
   return (
-    <div className="w-full max mt-8 rounded-lg bg-gray-700 shadow-md">
+    <div
+      onClick={() => setShowModal(!showModal)}
+      className="w-full max mt-8 rounded-lg bg-gray-700 shadow-md">
       {type === 'characters' ? (
         <>
           <div style={imageStyles} className="rounded-t-lg"></div>
@@ -37,6 +42,9 @@ const Card = ({ image = '', name, type, dimension, episode }: CardData) => {
           <div className="p-3 text-white font-bold">{name}</div>
           <div className="p-3 pt-0 text-gray-300">{episode}</div>
         </>
+      ) : null}
+      {showModal ? (
+        <ViewItem toggleModal={setShowModal} showModal={showModal} />
       ) : null}
     </div>
   );

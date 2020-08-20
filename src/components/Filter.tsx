@@ -75,7 +75,7 @@ const Filter = ({ setFilter }: Props) => {
         ref={menu}
         className={`${
           hideMenu ? 'hidden' : ''
-        } absolute top-0 right-0 bg-gray-700 text-white py-4 px-4 rounded-md`}>
+        } absolute shadow top-0 right-0 bg-gray-800 text-white py-4 px-4 rounded-md`}>
         <div className="flex ">
           <div>
             <div className="flex mb-3">
