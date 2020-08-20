@@ -195,7 +195,7 @@ const Results = (props: Props) => {
           loader={loading()}
           loadMore={handleInfiniteScroll}
           hasMore={hasMore()}>
-          <div>{renderResults()}</div>
+          <div className="sm:flex flex-wrap">{renderResults()}</div>
         </InfiniteScroller>
       ) : (
         <div className="text-white mt-4 text-2xl text-center">

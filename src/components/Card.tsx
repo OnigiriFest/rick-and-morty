@@ -28,33 +28,37 @@ const Card = ({ image = '', name, type, dimension, episode, index }: Props) => {
   return (
     <div
       onClick={() => setShowModal(!showModal)}
-      className="w-full max mt-8 rounded-lg bg-gray-700 shadow-md">
-      {type === 'characters' ? (
-        <>
-          <div style={imageStyles} className="rounded-t-lg"></div>
-          <div className="p-3 text-white font-bold">{name}</div>
-        </>
-      ) : null}
-      {type === 'locations' ? (
-        <>
-          <div className="p-3 text-white font-bold">{name}</div>
-          <div className="p-3 pt-0 text-gray-300">{dimension}</div>
-        </>
-      ) : null}
-      {type === 'episodes' ? (
-        <>
-          <div className="p-3 text-white font-bold">{name}</div>
-          <div className="p-3 pt-0 text-gray-300">{episode}</div>
-        </>
-      ) : null}
-      {showModal ? (
-        <ViewItem
-          index={index}
-          type={type}
-          toggleModal={setShowModal}
-          showModal={showModal}
-        />
-      ) : null}
+      className="w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 max mt-8 bg-gray-900">
+      <div className="w-11/12">
+        <div className="m-auto bg-gray-700 rounded-lg shadow-md">
+          {type === 'characters' ? (
+            <>
+              <div style={imageStyles} className="rounded-t-lg"></div>
+              <div className="p-3 text-white font-bold">{name}</div>
+            </>
+          ) : null}
+          {type === 'locations' ? (
+            <>
+              <div className="p-3 text-white font-bold">{name}</div>
+              <div className="p-3 pt-0 text-gray-300">{dimension}</div>
+            </>
+          ) : null}
+          {type === 'episodes' ? (
+            <>
+              <div className="p-3 text-white font-bold">{name}</div>
+              <div className="p-3 pt-0 text-gray-300">{episode}</div>
+            </>
+          ) : null}
+          {showModal ? (
+            <ViewItem
+              index={index}
+              type={type}
+              toggleModal={setShowModal}
+              showModal={showModal}
+            />
+          ) : null}
+        </div>
+      </div>
     </div>
   );
 };

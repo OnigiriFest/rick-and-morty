@@ -218,7 +218,7 @@ const ViewItem = ({
                   <div>
                     <p className="pb-2">
                       <span className="text-gray-500 text-sm">
-                        Primeros 5 personajes que aparecen en el episodio:{' '}
+                        Primeros 5 residentes del lugar:{' '}
                       </span>
                     </p>
                     <ul className="list-disc pl-4">
