@@ -13,6 +13,7 @@ import FilterType from '../types/Filter';
 import { ThunkDispatch } from 'redux-thunk';
 import { AppActions } from '../types/actions';
 import { bindActionCreators } from 'redux';
+import { clearEpisodes } from '../redux/episodeDuck';
 
 interface FiltersProps {}
 
@@ -41,6 +42,7 @@ const Filter = ({ setFilter }: Props) => {
   }, [menu]);
 
   useEffect(() => {
+    clearEpisodes();
     setFilter({ name: selected });
   }, [selected, setFilter]);
 
@@ -142,6 +144,7 @@ interface LinkStateToProps {
 
 interface LinkDispatchToProps {
   setFilter: (filter: FilterType) => void;
+  clearEpisodes: () => AppActions;
 }
 
 const mapStateToProps = (state: AppState): LinkStateToProps => ({
@@ -152,6 +155,7 @@ const mapDispatchToProps = (
   dispatch: ThunkDispatch<any, any, AppActions>
 ): LinkDispatchToProps => ({
   setFilter: bindActionCreators(setFilter, dispatch),
+  clearEpisodes: bindActionCreators(clearEpisodes, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Filter);

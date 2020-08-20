@@ -196,7 +196,11 @@ const Results = (props: Props) => {
         </InfiniteScroller>
       ) : (
         <div className="text-white mt-4 text-2xl text-center">
-          {props.chars.term === ''
+          {props.chars.fetching ||
+          props.locations.fetching ||
+          props.episodes.fetching
+            ? loading()
+            : props.chars.term === ''
             ? `Bienvenido realiza una búsqueda`
             : `No se encontraron resultados para el termino de búsqueda "${props.chars.term}".`}
         </div>

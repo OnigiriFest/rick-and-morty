@@ -12,6 +12,7 @@ import { getLocations, clearLocations } from '../redux/locationDuck';
 import { getEpisodes, clearEpisodes } from '../redux/episodeDuck';
 import { AppState } from '../redux/store';
 import { AppActions } from '../types/actions';
+import usePrevious from '../hooks/usePrevious';
 
 interface SearchBarProps {}
 
@@ -31,11 +32,12 @@ const SearchBar = ({
 }: Props) => {
   const [input, setInput] = useState('');
   const [debouncedInput, setDebouncedInput] = useState(input);
+  const prevDebouncedInput = usePrevious(input);
 
   useEffect(() => {
     const timerId = setTimeout(() => {
       setDebouncedInput(input);
-    }, 1000);
+    }, 500);
 
     return () => {
       clearTimeout(timerId);
@@ -45,6 +47,12 @@ const SearchBar = ({
   useEffect(() => {
     if (debouncedInput.length < 3) {
       return;
+    }
+
+    if (prevDebouncedInput !== debouncedInput) {
+      clearCharacters();
+      clearLocations();
+      clearEpisodes();
     }
 
     switch (filter.name) {
@@ -60,7 +68,17 @@ const SearchBar = ({
       default:
         break;
     }
-  }, [debouncedInput, getCharacters, filter, getLocations, getEpisodes]);
+  }, [
+    debouncedInput,
+    prevDebouncedInput,
+    filter,
+    getCharacters,
+    getLocations,
+    getEpisodes,
+    clearCharacters,
+    clearLocations,
+    clearEpisodes,
+  ]);
 
   const resetInput = () => {
     setInput('');
