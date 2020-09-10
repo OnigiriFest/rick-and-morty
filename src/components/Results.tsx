@@ -15,6 +15,7 @@ import { AppState } from '../redux/store';
 import { addCharacters, URL } from '../redux/charsDuck';
 import { addLocations } from '../redux/locationDuck';
 import { addEpisodes } from '../redux/episodeDuck';
+import { CHARACTERS, LOCATIONS, EPISODES } from '../utils/constants';
 
 interface AppProps {}
 
@@ -23,7 +24,7 @@ type Props = AppProps & LinkDispatchProps & LinkStateProps;
 const Results = (props: Props) => {
   const renderResults = () => {
     switch (props.filter.name) {
-      case 'characters':
+      case CHARACTERS:
         if (!props.chars.results || props.chars.results.length === 0) {
           return false;
         }
@@ -38,7 +39,7 @@ const Results = (props: Props) => {
             />
           );
         });
-      case 'locations':
+      case LOCATIONS:
         if (!props.locations.results || props.locations.results.length === 0) {
           return false;
         }
@@ -53,7 +54,7 @@ const Results = (props: Props) => {
             />
           );
         });
-      case 'episodes':
+      case EPISODES:
         if (!props.episodes.results || props.episodes.results.length === 0) {
           return false;
         }
@@ -69,12 +70,12 @@ const Results = (props: Props) => {
           );
         });
       default:
-        break;
+        return null;
     }
   };
 
   const handleInfiniteScroll = async (page: number) => {
-    if (props.filter.name === 'characters') {
+    if (props.filter.name === CHARACTERS) {
       const query = `
       query {
         ${props.filter.name}(page: ${page}, filter: { name: "${props.chars.term}" }) {
@@ -97,7 +98,7 @@ const Results = (props: Props) => {
       return;
     }
 
-    if (props.filter.name === 'locations') {
+    if (props.filter.name === LOCATIONS) {
       const query = `
       query {
         ${props.filter.name}(page: ${page}, filter: { name: "${props.chars.term}" }) {
@@ -120,7 +121,7 @@ const Results = (props: Props) => {
       return;
     }
 
-    if (props.filter.name === 'episodes') {
+    if (props.filter.name === EPISODES) {
       const query = `
       query {
         ${props.filter.name}(page: ${page}, filter: { name: "${props.episodes.term}" }) {
@@ -167,16 +168,20 @@ const Results = (props: Props) => {
 
   const hasMore = () => {
     switch (props.filter.name) {
-      case 'characters':
-        return props.chars.info && props.chars.info.next !== null
+      case CHARACTERS:
+        return props.chars && props.chars.info && props.chars.info.next !== null
           ? true
           : false;
-      case 'locations':
-        return props.locations.info && props.locations.info.next !== null
+      case LOCATIONS:
+        return props.locations &&
+          props.locations.info &&
+          props.locations.info.next !== null
           ? true
           : false;
-      case 'episodes':
-        return props.episodes.info && props.episodes.info.next !== null
+      case EPISODES:
+        return props.episodes &&
+          props.episodes.info &&
+          props.episodes.info.next !== null
           ? true
           : false;
       default:
@@ -188,18 +193,18 @@ const Results = (props: Props) => {
     let message;
 
     switch (props.filter.name) {
-      case 'episodes':
-        if (props.episodes.term !== '') {
+      case EPISODES:
+        if (props.episodes && props.episodes.term !== '') {
           message = props.episodes.term;
         }
         break;
-      case 'characters':
-        if (props.chars.term !== '') {
+      case CHARACTERS:
+        if (props.chars && props.chars.term !== '') {
           message = props.chars.term;
         }
         break;
-      case 'locations':
-        if (props.locations.term !== '') {
+      case LOCATIONS:
+        if (props.locations && props.locations.term !== '') {
           message = props.locations.term;
         }
         break;
@@ -229,9 +234,9 @@ const Results = (props: Props) => {
         </InfiniteScroller>
       ) : (
         <div className="text-white mt-4 text-2xl text-center">
-          {props.chars.fetching ||
-          props.locations.fetching ||
-          props.episodes.fetching
+          {(props.chars && props.chars.fetching) ||
+          (props.locations && props.locations.fetching) ||
+          (props.episodes && props.episodes.fetching)
             ? loading()
             : getMessage()}
         </div>

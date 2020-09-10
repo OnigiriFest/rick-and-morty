@@ -14,6 +14,7 @@ import CharacterResults from '../types/CharacterResults';
 import EpisodeResults from '../types/EpisodeResults';
 import LocationResults from '../types/LocationResults';
 import Character from '../types/Character';
+import { CHARACTERS, LOCATIONS, EPISODES } from '../utils/constants';
 
 interface ViewItemProps {
   toggleModal: (show: boolean) => any;
@@ -50,13 +51,13 @@ const ViewItem = ({
 
   useEffect(() => {
     switch (type) {
-      case 'characters':
+      case CHARACTERS:
         fetchCharacter(index);
         return;
-      case 'episodes':
+      case EPISODES:
         fetchEpisode(index);
         return;
-      case 'locations':
+      case LOCATIONS:
         fetchLocation(index);
         return;
       default:
@@ -82,7 +83,7 @@ const ViewItem = ({
         className="pb-8 bg-black w-full max-w-sm m-auto flex-col flex text-white rounded-lg">
         {/* ------------------ CHARACTER ---------------------- */}
 
-        {type === 'characters' && characters.results && (
+        {type === 'characters' && characters && characters.results && (
           <div>
             <div
               className="rounded-t-lg flex justify-end p-2"
@@ -136,7 +137,7 @@ const ViewItem = ({
 
         {/* ------------------ EPISODE ---------------------- */}
 
-        {type === 'episodes' && episodes.results && (
+        {type === 'episodes' && episodes && episodes.results && (
           <div className="flex mt-8 justify-between">
             <div className="px-8">
               <p className="text-center font-bold text-lg mt-2">
@@ -195,7 +196,7 @@ const ViewItem = ({
 
         {/* ------------------ LOCATION ---------------------- */}
 
-        {type === 'locations' && locations.results && (
+        {type === 'locations' && locations && locations.results && (
           <div className="flex mt-8 justify-between">
             <div className="px-8">
               <p className="text-center font-bold text-lg">

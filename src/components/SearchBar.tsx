@@ -13,6 +13,7 @@ import { getEpisodes, clearEpisodes } from '../redux/episodeDuck';
 import { AppState } from '../redux/store';
 import { AppActions } from '../types/actions';
 import usePrevious from '../hooks/usePrevious';
+import { CHARACTERS, LOCATIONS, EPISODES } from '../utils/constants';
 
 interface SearchBarProps {}
 
@@ -45,6 +46,20 @@ const SearchBar = ({
   }, [input]);
 
   useEffect(() => {
+    if (prevDebouncedInput !== debouncedInput) {
+      clearCharacters();
+      clearLocations();
+      clearEpisodes();
+    }
+  }, [
+    clearEpisodes,
+    clearLocations,
+    clearCharacters,
+    prevDebouncedInput,
+    debouncedInput,
+  ]);
+
+  useEffect(() => {
     let searchTerm = debouncedInput.trim();
 
     if (searchTerm.length < 3) {
@@ -54,20 +69,14 @@ const SearchBar = ({
       return;
     }
 
-    if (prevDebouncedInput !== debouncedInput) {
-      clearCharacters();
-      clearLocations();
-      clearEpisodes();
-    }
-
     switch (filter.name) {
-      case 'characters':
+      case CHARACTERS:
         getCharacters(searchTerm);
         break;
-      case 'locations':
+      case LOCATIONS:
         getLocations(searchTerm);
         break;
-      case 'episodes':
+      case EPISODES:
         getEpisodes(searchTerm);
         break;
       default:
@@ -75,7 +84,6 @@ const SearchBar = ({
     }
   }, [
     debouncedInput,
-    prevDebouncedInput,
     filter,
     getCharacters,
     getLocations,
@@ -95,6 +103,9 @@ const SearchBar = ({
 
   const noRenderButton = () => {
     return input === '' &&
+      chars &&
+      locations &&
+      episodes &&
       chars.results &&
       locations.results &&
       episodes.results &&
