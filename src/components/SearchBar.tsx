@@ -45,7 +45,9 @@ const SearchBar = ({
   }, [input]);
 
   useEffect(() => {
-    if (debouncedInput.length < 3) {
+    let searchTerm = debouncedInput.trim();
+
+    if (searchTerm.length < 3) {
       return;
     }
 
@@ -57,13 +59,13 @@ const SearchBar = ({
 
     switch (filter.name) {
       case 'characters':
-        getCharacters(debouncedInput);
+        getCharacters(searchTerm);
         break;
       case 'locations':
-        getLocations(debouncedInput);
+        getLocations(searchTerm);
         break;
       case 'episodes':
-        getEpisodes(debouncedInput);
+        getEpisodes(searchTerm);
         break;
       default:
         break;
