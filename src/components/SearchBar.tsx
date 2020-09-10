@@ -48,6 +48,9 @@ const SearchBar = ({
     let searchTerm = debouncedInput.trim();
 
     if (searchTerm.length < 3) {
+      clearCharacters();
+      clearLocations();
+      clearEpisodes();
       return;
     }
 
