@@ -30,7 +30,7 @@ const Card = ({ image = '', name, type, dimension, episode, index }: Props) => {
       onClick={() => setShowModal(!showModal)}
       className="w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 max mt-8 bg-gray-900">
       <div className="w-11/12">
-        <div className="m-auto bg-gray-700 rounded-lg shadow-md">
+        <div className="m-auto bg-gray-700 rounded-lg shadow-md cursor-pointer">
           {type === 'characters' ? (
             <>
               <div style={imageStyles} className="rounded-t-lg"></div>
