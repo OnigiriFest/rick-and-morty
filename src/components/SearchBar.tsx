@@ -184,7 +184,7 @@ const SearchBar = ({
             </button>
           )}
         </div>
-        <div className="text-red-500 h-1">
+        <div className="text-red-500 h-1" style={{ minHeight: 0.25rem }}>
           {error ? 'escribir solo letras, numeros o espacios' : ' '}
         </div>
       </div>
