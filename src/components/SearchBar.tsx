@@ -15,9 +15,7 @@ import { AppActions } from '../types/actions';
 import usePrevious from '../hooks/usePrevious';
 import { CHARACTERS, LOCATIONS, EPISODES } from '../utils/constants';
 
-interface SearchBarProps {}
-
-type Props = SearchBarProps & LinkStateToProps & LinkDispatchToProps;
+type Props = LinkStateToProps & LinkDispatchToProps;
 
 const SearchBar = ({
   getCharacters,
@@ -65,12 +63,7 @@ const SearchBar = ({
 
     let validationString = searchTerm.replace(/[A-Za-z 0-9]/g, '');
 
-    if (validationString === '') {
-      setError(false);
-    } else {
-      setError(true);
-      return;
-    }
+    setError(validationString === '' ? false : true);
 
     if (searchTerm.length < 3) {
       clearCharacters();
@@ -113,20 +106,19 @@ const SearchBar = ({
     clearEpisodes();
   };
 
-  const noRenderButton = () => {
-    return input === '' &&
-      chars &&
-      locations &&
-      episodes &&
-      chars.results &&
-      locations.results &&
-      episodes.results &&
-      chars.results.length === 0 &&
-      locations.results.length === 0 &&
-      episodes.results.length === 0
+  const noRenderButton = () =>
+    input === '' &&
+    chars &&
+    locations &&
+    episodes &&
+    chars.results &&
+    locations.results &&
+    episodes.results &&
+    chars.results.length === 0 &&
+    locations.results.length === 0 &&
+    episodes.results.length === 0
       ? true
       : false;
-  };
 
   return (
     <>

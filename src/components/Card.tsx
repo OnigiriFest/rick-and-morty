@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import ViewItem from './ViewItem';
 
-interface CardProps {
+interface Props {
   image?: string;
   name: string;
   data?: string;
@@ -12,18 +12,49 @@ interface CardProps {
   index: number;
 }
 
-type Props = CardProps;
-
 const Card = ({ image = '', name, type, dimension, episode, index }: Props) => {
   let imageStyles = {
     backgroundImage: `url(${image})`,
-    backgroundRepeat: 'no-reapeat',
-    backgroundPosition: 'center',
-    backgroundSize: 'cover',
-    height: '300px',
   };
 
   const [showModal, setShowModal] = useState(false);
+
+  const renderCardInfo = () => {
+    if (type === 'characters') {
+      return (
+        <>
+          <div style={imageStyles} className="card-image rounded-t-lg"></div>
+          <div className="p-3 text-white font-bold">{name}</div>
+        </>
+      );
+    } else if (type === 'locations') {
+      return (
+        <>
+          <div className="p-3 xl:m-5 text-white font-bold">{name}</div>
+          <div className="p-3 pt-0 xl:m-5 text-gray-300">{dimension}</div>
+        </>
+      );
+    } else if (type === 'episodes') {
+      return (
+        <>
+          <div className="p-3 xl:m-5 text-white font-bold">{name}</div>
+          <div className="p-3 pt-0 xl:m-5 text-gray-300">{episode}</div>
+        </>
+      );
+    } else {
+      return null;
+    }
+  };
+
+  const renderModal = () =>
+    showModal && (
+      <ViewItem
+        index={index}
+        type={type}
+        toggleModal={setShowModal}
+        showModal={showModal}
+      />
+    );
 
   return (
     <div
@@ -31,32 +62,8 @@ const Card = ({ image = '', name, type, dimension, episode, index }: Props) => {
       className="w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 max mt-8 bg-gray-900">
       <div className="w-11/12">
         <div className="m-auto bg-gray-700 rounded-lg shadow-md cursor-pointer">
-          {type === 'characters' ? (
-            <>
-              <div style={imageStyles} className="rounded-t-lg"></div>
-              <div className="p-3 text-white font-bold">{name}</div>
-            </>
-          ) : null}
-          {type === 'locations' ? (
-            <>
-              <div className="p-3 xl:m-5 text-white font-bold">{name}</div>
-              <div className="p-3 pt-0 xl:m-5 text-gray-300">{dimension}</div>
-            </>
-          ) : null}
-          {type === 'episodes' ? (
-            <>
-              <div className="p-3 xl:m-5 text-white font-bold">{name}</div>
-              <div className="p-3 pt-0 xl:m-5 text-gray-300">{episode}</div>
-            </>
-          ) : null}
-          {showModal ? (
-            <ViewItem
-              index={index}
-              type={type}
-              toggleModal={setShowModal}
-              showModal={showModal}
-            />
-          ) : null}
+          {renderCardInfo()}
+          {renderModal()}
         </div>
       </div>
     </div>

@@ -4,6 +4,13 @@
   font-family: 'Roboto', sans-serif;
 }
 
+.card-image {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  height: 300px;
+}
+
 .lds-spinner {
   color: official;
   display: inline-block;

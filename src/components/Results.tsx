@@ -17,9 +17,7 @@ import { addLocations } from '../redux/locationDuck';
 import { addEpisodes } from '../redux/episodeDuck';
 import { CHARACTERS, LOCATIONS, EPISODES } from '../utils/constants';
 
-interface AppProps {}
-
-type Props = AppProps & LinkDispatchProps & LinkStateProps;
+type Props = LinkDispatchProps & LinkStateProps;
 
 const Results = (props: Props) => {
   const renderResults = () => {
@@ -43,32 +41,28 @@ const Results = (props: Props) => {
         if (!props.locations.results || props.locations.results.length === 0) {
           return false;
         }
-        return props.locations.results.map((location, index) => {
-          return (
-            <Card
-              key={location.id}
-              type={props.filter.name}
-              index={index}
-              name={location.name}
-              dimension={location.dimension}
-            />
-          );
-        });
+        return props.locations.results.map((location, index) => (
+          <Card
+            key={location.id}
+            type={props.filter.name}
+            index={index}
+            name={location.name}
+            dimension={location.dimension}
+          />
+        ));
       case EPISODES:
         if (!props.episodes.results || props.episodes.results.length === 0) {
           return false;
         }
-        return props.episodes.results.map((episode, index) => {
-          return (
-            <Card
-              key={episode.id}
-              index={index}
-              type={props.filter.name}
-              name={episode.name}
-              episode={episode.episode}
-            />
-          );
-        });
+        return props.episodes.results.map((episode, index) => (
+          <Card
+            key={episode.id}
+            index={index}
+            type={props.filter.name}
+            name={episode.name}
+            episode={episode.episode}
+          />
+        ));
       default:
         return null;
     }
@@ -145,26 +139,24 @@ const Results = (props: Props) => {
     }
   };
 
-  const loading = () => {
-    return (
-      <div key="0" className="w-full flex justify-center my-4">
-        <div className={'lds-spinner'}>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
+  const loading = () => (
+    <div key="0" className="w-full flex justify-center my-4">
+      <div className={'lds-spinner'}>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
       </div>
-    );
-  };
+    </div>
+  );
 
   const hasMore = () => {
     switch (props.filter.name) {

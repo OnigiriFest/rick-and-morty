@@ -15,9 +15,7 @@ import { AppActions } from '../types/actions';
 import { bindActionCreators } from 'redux';
 import { clearEpisodes } from '../redux/episodeDuck';
 
-interface FiltersProps {}
-
-type Props = FiltersProps & LinkStateToProps & LinkDispatchToProps;
+type Props = LinkStateToProps & LinkDispatchToProps;
 
 const Filter = ({ setFilter }: Props) => {
   const [hideMenu, setHideMenu] = useState(true);
@@ -26,10 +24,8 @@ const Filter = ({ setFilter }: Props) => {
 
   useEffect(() => {
     const onBodyClick = (e: any) => {
-      if (menu && menu.current) {
-        if (menu.current.contains(e.target)) {
-          return;
-        }
+      if (menu && menu.current && menu.current.contains(e.target)) {
+        return;
       }
       setHideMenu(true);
     };
@@ -46,9 +42,8 @@ const Filter = ({ setFilter }: Props) => {
     setFilter({ name: selected });
   }, [selected, setFilter]);
 
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const onChange = (e: ChangeEvent<HTMLInputElement>) =>
     setSelected(e.target.value);
-  };
 
   return (
     <div className="relative flex">
@@ -70,7 +65,7 @@ const Filter = ({ setFilter }: Props) => {
           />
         </svg>
       </button>
-      {/* Menu */}
+
       <div
         ref={menu}
         className={`${
